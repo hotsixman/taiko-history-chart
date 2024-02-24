@@ -1,31 +1,25 @@
 import {LitElement, html, css} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import {customElement, property} from 'lit/decorators.js';
 
 @customElement('history-date')
-export class HistoryGrid extends LitElement{
+export class HistoryDate extends LitElement{
     static styles = css`
-        .history-container{
+        .history-date{
             width:100%;
-            display:grid;
+            display:flex;
 
-            grid-template-columns: 100px auto;
-            grid-template-rows: auto 100px;
+            justify-content:center;
+            align-items:center;
         }
     `
 
+    @property({type:Number})
+    height:number = 50;
+
     render(){
         return html`
-            <div class="history-container">
-                <div>
-                    <slot name="date">
-                </div>
-                <div>
-                    <slot name="history">
-                </div>
-                <div></div>
-                <div>
-                    <slot name="gamecenter">
-                </div>
+            <div class="history-date" style="height:${this.height}px;">
+                <slot>
             </div>
         `
     }
