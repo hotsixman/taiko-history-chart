@@ -11,19 +11,25 @@ export class HistoryGrid extends LitElement{
             grid-template-columns: 100px auto;
             grid-template-rows: auto 100px;
         }
+
+        .gamecenter-container{
+            display:flex;
+            flex-direction: row;
+            align-items: flex-start;
+        }
     `
 
     render(){
         return html`
             <div class="history-container">
-                <div>
+                <div class="date">
                     <slot name="date">
                 </div>
                 <div>
                     <slot name="history">
                 </div>
                 <div></div>
-                <div>
+                <div class="gamecenter-container">
                     <slot name="gamecenter">
                 </div>
             </div>

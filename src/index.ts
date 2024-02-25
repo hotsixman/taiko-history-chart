@@ -2,8 +2,9 @@ import axios from 'axios';
 import type { Gamecenter, History } from './lib/types';
 import { HistoryDate } from './components/historyDate';
 import { HistoryGrid } from './components/historyGrid';
+import { HistoryGamecenter } from './components/historyGamecenter';
 
-export {HistoryGrid, HistoryDate}
+export {HistoryGrid, HistoryDate, HistoryGamecenter}
 
 interface Data{
     gameCenters:Gamecenter[],
@@ -21,10 +22,12 @@ interface Data{
         dates.add(e.date)
     })
 
-    render(dates);
+    let gameCenters = [...data.gameCenters];
+
+    render(dates, gameCenters);
 })();
 
-function render(dates:Set<number>):void{
+function render(dates:Set<number>, gameCenters:Gamecenter[]):void{
     const historyGrid = document.querySelector('history-grid');
 
     if(!historyGrid){
@@ -39,5 +42,13 @@ function render(dates:Set<number>):void{
                 ${(new Date(e)).toLocaleDateString()}
             </history-date>
         `
+    }).join('\n')
+
+    historyGrid.innerHTML += [...gameCenters].map(e => {
+        return /*html*/`
+            <history-gamecenter slot="gamecenter">
+            ${e.name}
+            </history-gamecenter>
+        `;
     }).join('\n')
 }
