@@ -37,11 +37,11 @@ function render(dates: Set<number>, gameCenters: Gamecenter[], histories: Histor
 
     historyGrid.innerHTML = '';
 
-    let datesArray = [...dates].sort().reverse()
+    let datesArray = [...dates, 0].sort().reverse();
     historyGrid.innerHTML += datesArray.map(e => {
         return /*html*/`
             <history-date slot="date">
-                ${(new Date(e)).toLocaleDateString()}
+                ${e === 0 ? '' : (new Date(e)).toLocaleDateString()}
             </history-date>
         `
     }).join('\n')
@@ -57,7 +57,7 @@ function render(dates: Set<number>, gameCenters: Gamecenter[], histories: Histor
 
     let system = Array(gameCenters.length);
     for (let i = 0; i < system.length; i++) {
-        system[i] = Array(dates.size);
+        system[i] = Array(datesArray.length);
         for(let j = 0 ; j < system[i].length; j++){
             system[i][j] = {
                 move:false
@@ -68,9 +68,12 @@ function render(dates: Set<number>, gameCenters: Gamecenter[], histories: Histor
         let x = gameCentersArray.findIndex(el => el.order === e.to);
         let y = datesArray.findIndex(el => el === e.date);
         system[x][y].move = true;
+
+        let x_ = gameCentersArray.findIndex(el => el.order === e.from);
+        system[x_][y+1].move = true;
     })
     historyGrid.innerHTML += /*html*/`
-        <history-plate columns=${gameCenters.length} rows=${dates.size} slot="history">
+        <history-plate columns=${gameCenters.length} rows=${datesArray.length} slot="history">
         ${
             system.map(e => {
                 return e.map((el: any) => {
